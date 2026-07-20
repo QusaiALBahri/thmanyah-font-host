@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f3f5f1" id="themeColorMeta">
+  <script>
+    (function () {
+      let saved = '';
+      try { saved = localStorage.getItem('irbid-training-theme') || ''; } catch (error) {}
+      const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (systemDark ? 'dark' : 'light');
+    })();
+  </script>
+  <style>
+    @font-face {
+      font-family: "Thmanyah Sans";
+      src: url("https://QusaiALBahri.github.io/thmanyah-font-host/fonts/thmanyah-sans.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    html,
+    body,
+    button,
+    input,
+    textarea,
+    select {
+      font-family: "Thmanyah Sans", Arial, sans-serif;
+    }
+
+    :root {
+      --font-main: "Thmanyah Sans", "Segoe UI", Tahoma, Arial, sans-serif;
+      --bg: #f3f5f1;
+      --surface: rgba(255, 255, 255, 0.88);
+      --surface-solid: #ffffff;
+      --surface-muted: #edf2ee;
+      --text: #14201d;
+      --muted: #62706b;
+      --line: #dce4df;
+      --primary: #123c35;
+      --primary-hover: #0b2f29;
+      --accent: #d8ff66;
+      --accent-text: #172116;
+      --danger: #b42318;
+      --danger-bg: #fff1f0;
+      --success: #0b6b48;
+      --success-bg: #eaf8f1;
+      --focus: rgba(18, 60, 53, 0.2);
+      --shadow: 0 20px 55px rgba(24, 42, 36, 0.09);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0d1211;
+      --surface: rgba(23, 31, 29, 0.9);
+      --surface-solid: #171f1d;
+      --surface-muted: #202a27;
+      --text: #eef4f1;
+      --muted: #a9b5b0;
+      --line: #2e3a36;
+      --primary: #d8ff66;
+      --primary-hover: #c8ee58;
+      --accent: #d8ff66;
+      --accent-text: #172116;
+      --danger: #ffb4ab;
+      --danger-bg: #3c1d1b;
+      --success: #7ee2b8;
+      --success-bg: #12352a;
+      --focus: rgba(216, 255, 102, 0.2);
+      --shadow: 0 24px 65px rgba(0, 0, 0, 0.32);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-main);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 85% -10%, rgba(216, 255, 102, 0.24), transparent 34%),
+        radial-gradient(circle at 0% 28%, rgba(45, 118, 104, 0.10), transparent 30%),
+        var(--bg);
+      line-height: 1.65;
+      transition: background .25s ease, color .25s ease;
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; }
+
+    .page-shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 22px 0 56px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .institutions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .institution {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      padding: 7px 11px;
+      border-radius: 999px;
+      backdrop-filter: blur(12px);
+    }
+
+    .theme-toggle {
+      width: 46px;
+      height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,.06);
+      transition: transform .2s ease, background .2s ease;
+      flex: 0 0 auto;
+    }
+    .theme-toggle:hover { transform: translateY(-2px); }
+    .theme-toggle svg { width: 21px; height: 21px; }
+    .moon-icon { display: none; }
+    html[data-theme="dark"] .sun-icon { display: none; }
+    html[data-theme="dark"] .moon-icon { display: block; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: var(--primary);
+      color: #fff;
+      border-radius: var(--radius-lg);
+      padding: clamp(30px, 5vw, 64px);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    html[data-theme="dark"] .hero { color: #152019; }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero::before {
+      width: 320px;
+      height: 320px;
+      background: rgba(216, 255, 102, .16);
+      inset: -160px auto auto -100px;
+    }
+    .hero::after {
+      width: 210px;
+      height: 210px;
+      border: 1px solid rgba(255,255,255,.18);
+      inset: auto -70px -100px auto;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 820px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--accent-text);
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+    .eyebrow-dot { width: 8px; height: 8px; border-radius: 50%; background: #172116; }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(34px, 6vw, 68px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      max-width: 900px;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 810px;
+      font-size: clamp(16px, 2vw, 19px);
+      line-height: 1.9;
+      opacity: .88;
+    }
+
+    .hero-notes {
+      margin-top: 24px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .hero-note {
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.08);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    html[data-theme="dark"] .hero-note {
+      border-color: rgba(21,32,25,.2);
+      background: rgba(21,32,25,.08);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 310px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .form-stack { display: grid; gap: 20px; }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: clamp(20px, 4vw, 34px);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .section-number {
+      min-width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--surface-muted);
+      color: var(--primary);
+      font-weight: 900;
+      border: 1px solid var(--line);
+    }
+    .section-copy { flex: 1; }
+    .section-title { margin: 0; font-size: clamp(22px, 3vw, 30px); line-height: 1.25; }
+    .section-description { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+
+    .fields-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 17px;
+    }
+
+    .field { display: grid; gap: 7px; min-width: 0; }
+    .field.full { grid-column: 1 / -1; }
+    .field label, .field-label {
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .required { color: var(--danger); margin-right: 3px; }
+    .hint { color: var(--muted); font-size: 12px; margin: -2px 0 0; }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="search"],
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--surface-solid);
+      color: var(--text);
+      padding: 13px 14px;
+      outline: none;
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+    textarea { min-height: 112px; resize: vertical; }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--focus);
+    }
+    input::placeholder, textarea::placeholder { color: color-mix(in srgb, var(--muted) 75%, transparent); }
+
+    .segmented {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+    .segmented label { cursor: pointer; }
+    .segmented input { position: absolute; opacity: 0; pointer-events: none; }
+    .segmented span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--surface-solid);
+      color: var(--muted);
+      font-weight: 700;
+      transition: .18s ease;
+    }
+    .segmented input:checked + span {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 6px 20px var(--focus);
+    }
+    html[data-theme="dark"] .segmented input:checked + span { color: #152019; }
+
+    .course-toolbar {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .search-wrap { position: relative; }
+    .search-wrap svg {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      width: 20px;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .search-wrap input { padding-right: 46px; }
+
+    .category-filters {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+    .filter-btn {
+      white-space: nowrap;
+      border: 1px solid var(--line);
+      background: var(--surface-solid);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-weight: 750;
+    }
+    .filter-btn.active {
+      color: #fff;
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    html[data-theme="dark"] .filter-btn.active { color: #152019; }
+
+    .course-groups { display: grid; gap: 26px; }
+    .course-group[hidden] { display: none; }
+    .group-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+    .group-count { color: var(--muted); font-size: 12px; font-weight: 700; }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .course-card {
+      position: relative;
+      display: grid;
+      gap: 12px;
+      min-height: 174px;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--surface-solid);
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .course-card:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--primary) 45%, var(--line)); }
+    .course-card.selected {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--focus);
+      background: color-mix(in srgb, var(--surface-solid) 92%, var(--accent));
+    }
+    .course-checkbox { position: absolute; opacity: 0; pointer-events: none; }
+    .checkmark {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--surface-muted);
+      display: grid;
+      place-items: center;
+      transition: .18s ease;
+    }
+    .checkmark svg { width: 15px; height: 15px; opacity: 0; transform: scale(.7); transition: .18s ease; }
+    .course-card.selected .checkmark { background: var(--primary); border-color: var(--primary); color: #fff; }
+    html[data-theme="dark"] .course-card.selected .checkmark { color: #152019; }
+    .course-card.selected .checkmark svg { opacity: 1; transform: scale(1); }
+
+    .course-code {
+      display: inline-flex;
+      width: fit-content;
+      border-radius: 999px;
+      background: var(--surface-muted);
+      color: var(--muted);
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .course-name { margin: 0; padding-left: 28px; font-size: 17px; line-height: 1.45; }
+    .course-meta { display: flex; flex-wrap: wrap; gap: 7px; margin-top: auto; }
+    .meta-chip {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 5px 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .empty-state {
+      display: none;
+      padding: 28px;
+      text-align: center;
+      border: 1px dashed var(--line);
+      border-radius: var(--radius-md);
+      color: var(--muted);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      display: grid;
+      gap: 14px;
+    }
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+    .summary-card h2 { margin: 0 0 5px; font-size: 20px; }
+    .summary-sub { color: var(--muted); font-size: 13px; margin: 0 0 18px; }
+    .summary-count {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 15px;
+    }
+    .summary-number { font-size: 42px; line-height: 1; font-weight: 900; letter-spacing: -.04em; }
+    .summary-label { color: var(--muted); font-size: 12px; }
+    .summary-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .metric { padding: 12px; border-radius: 13px; background: var(--surface-muted); }
+    .metric-label { display: block; color: var(--muted); font-size: 11px; }
+    .metric-value { display: block; font-weight: 900; margin-top: 4px; }
+    .selected-mini-list { display: grid; gap: 7px; margin-top: 14px; max-height: 240px; overflow: auto; }
+    .selected-mini-item { font-size: 12px; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface-solid); }
+    .selected-placeholder { color: var(--muted); font-size: 13px; text-align: center; padding: 12px 0; }
+
+    .privacy-card {
+      border-radius: var(--radius-md);
+      padding: 16px;
+      background: color-mix(in srgb, var(--accent) 24%, var(--surface-solid));
+      border: 1px solid color-mix(in srgb, var(--accent) 48%, var(--line));
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .consent-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--surface-solid);
+      padding: 15px;
+      cursor: pointer;
+    }
+    .consent-box input { margin-top: 5px; accent-color: var(--primary); width: 18px; height: 18px; flex: 0 0 auto; }
+    .consent-box span { font-size: 13px; color: var(--muted); }
+
+    .submit-area { display: grid; gap: 12px; }
+    .submit-btn {
+      width: 100%;
+      min-height: 56px;
+      border: 0;
+      border-radius: 16px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 900;
+      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 14px 30px var(--focus);
+      transition: transform .18s ease, opacity .18s ease, background .18s ease;
+    }
+    html[data-theme="dark"] .submit-btn { color: #152019; }
+    .submit-btn:hover:not(:disabled) { transform: translateY(-2px); background: var(--primary-hover); }
+    .submit-btn:disabled { opacity: .65; cursor: not-allowed; }
+    .spinner {
+      width: 19px; height: 19px; border: 2px solid currentColor; border-top-color: transparent;
+      border-radius: 50%; animation: spin .75s linear infinite; display: none;
+    }
+    .submit-btn.loading .spinner { display: block; }
+    .submit-btn.loading .submit-icon { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .notice {
+      display: none;
+      border-radius: 14px;
+      padding: 13px 15px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .notice.show { display: block; }
+    .notice.error { color: var(--danger); background: var(--danger-bg); border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); }
+    .notice.success { color: var(--success); background: var(--success-bg); border: 1px solid color-mix(in srgb, var(--success) 30%, transparent); }
+
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: clamp(34px, 8vw, 82px) 24px;
+    }
+    .success-screen.show { display: block; }
+    .success-icon {
+      width: 76px; height: 76px; border-radius: 24px; margin: 0 auto 18px;
+      display: grid; place-items: center; background: var(--success-bg); color: var(--success);
+    }
+    .success-icon svg { width: 38px; height: 38px; }
+    .success-screen h2 { font-size: clamp(26px, 4vw, 40px); margin: 0 0 10px; }
+    .success-screen p { max-width: 620px; margin: 0 auto 18px; color: var(--muted); }
+    .registration-id { display: inline-block; direction: ltr; padding: 9px 13px; border-radius: 10px; background: var(--surface-muted); font-family: ui-monospace, monospace; font-weight: 800; }
+
+    footer {
+      margin-top: 28px;
+      border-radius: var(--radius-lg);
+      background: #101c19;
+      color: #eef5f1;
+      padding: clamp(25px, 5vw, 44px);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 22px;
+      align-items: end;
+    }
+    .footer-label { color: var(--accent); font-size: 13px; font-weight: 900; margin-bottom: 9px; }
+    .footer-name { font-size: clamp(23px, 4vw, 36px); font-weight: 900; margin: 0 0 6px; }
+    .footer-phone { font-size: 19px; direction: ltr; display: inline-block; text-decoration: none; }
+    .footer-orgs { text-align: left; color: #aab9b4; font-size: 13px; line-height: 1.8; }
+
+    .honeypot { position: absolute !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important; left: -9999px !important; }
+
+    @media (max-width: 960px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; order: -1; }
+      .summary-card { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+      .summary-main { min-width: 0; }
+      .selected-mini-list { max-height: 150px; }
+      .privacy-card { display: none; }
+    }
+
+    @media (max-width: 720px) {
+      .page-shell { width: min(100% - 20px, 1180px); padding-top: 12px; }
+      .topbar { align-items: flex-start; }
+      .institutions { gap: 6px; }
+      .institution { font-size: 11px; padding: 6px 8px; }
+      .theme-toggle { width: 42px; height: 42px; }
+      .hero { border-radius: 22px; }
+      .fields-grid, .courses-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .summary-card { grid-template-columns: 1fr; }
+      .panel { border-radius: 22px; padding: 20px 16px; }
+      .course-card { min-height: 0; }
+      footer { grid-template-columns: 1fr; }
+      .footer-orgs { text-align: right; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <div class="topbar">
+      <div class="institutions" aria-label="الجهات المنظمة">
+        <span class="institution">محطـــة مستقبل إربد</span>
+        <span class="institution">وزارة الإقتصاد الرقمي والريادة</span>
+        <span class="institution">بلدية اربد الكبرى</span>
+      </div>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="تبديل الوضع الليلي والنهاري" title="تبديل الوضع الليلي والنهاري">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+   …1948 tokens truncated…هاتفية</option>
+                  <option>بريد إلكتروني</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" id="coursesSection">
+            <div class="section-head">
+              <div class="section-copy">
+                <h2 class="section-title">اختر الدورات التدريبية</h2>
+                <p class="section-description">يمكنك اختيار دورة واحدة أو عدة دورات من أي تصنيف.</p>
+              </div>
+              <div class="section-number">03</div>
+            </div>
+
+            <div class="course-toolbar">
+              <div class="search-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+                <input type="search" id="courseSearch" placeholder="ابحث باسم الدورة أو رقمها..." aria-label="البحث في الدورات">
+              </div>
+              <div class="category-filters" id="categoryFilters" aria-label="تصفية حسب التصنيف"></div>
+            </div>
+
+            <div class="course-groups" id="courseGroups"></div>
+            <div class="empty-state" id="emptyCourses">لا توجد دورات مطابقة لبحثك.</div>
+          </section>
+
+          <section class="panel">
+            <div class="section-head">
+              <div class="section-copy">
+                <h2 class="section-title">معلومات إضافية</h2>
+                <p class="section-description">أخبرنا بما يساعد على تهيئة تجربة تدريبية مناسبة.</p>
+              </div>
+              <div class="section-number">04</div>
+            </div>
+
+            <div class="fields-grid">
+              <div class="field full">
+                <span class="field-label">هل تحتاج إلى ترتيبات تيسيرية للمشاركة؟ <span class="required">*</span></span>
+                <div class="segmented" role="radiogroup" aria-label="الترتيبات التيسيرية">
+                  <label><input type="radio" name="accessibility" value="لا" required><span>لا</span></label>
+                  <label><input type="radio" name="accessibility" value="نعم"><span>نعم</span></label>
+                </div>
+                <p class="hint">لا نطلب تشخيصًا طبيًا؛ اذكر فقط الترتيب العملي الذي تحتاجه.</p>
+              </div>
+
+              <div class="field full" id="accessibilityDetailsField" hidden>
+                <label for="accessibilityDetails">الترتيبات التيسيرية المطلوبة <span class="required">*</span></label>
+                <textarea id="accessibilityDetails" name="accessibilityDetails" maxlength="500" placeholder="مثال: مدخل مناسب، مقعد محدد، مواد رقمية، وقت إضافي..."></textarea>
+              </div>
+
+              <div class="field">
+                <label for="source">كيف عرفت عن الدورات؟</label>
+                <select id="source" name="source">
+                  <option value="">اختياري</option>
+                  <option>صفحة محطة مستقبل إربد</option>
+                  <option>واتساب</option>
+                  <option>فيسبوك</option>
+                  <option>صديق أو زميل</option>
+                  <option>إعلان أو منشور</option>
+                  <option>أخرى</option>
+                </select>
+              </div>
+
+              <div class="field full">
+                <label for="notes">ملاحظات إضافية</label>
+                <textarea id="notes" name="notes" maxlength="500" placeholder="أي معلومات إضافية مرتبطة بطلب التسجيل — اختياري"></textarea>
+              </div>
+
+              <div class="field full honeypot" aria-hidden="true">
+                <label for="website">الموقع الإلكتروني</label>
+                <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+              </div>
+
+              <div class="field full">
+                <label class="consent-box">
+                  <input id="consent" name="consent" type="checkbox" required>
+                  <span>أوافق على استخدام البيانات المدخلة لأغراض التسجيل والتواصل وتنظيم التدريب، وأقر بأن إرسال الطلب لا يعني القبول النهائي في الدورة. <span class="required">*</span></span>
+                </label>
+              </div>
+
+              <div class="field full submit-area">
+                <div class="notice error" id="formError" role="alert"></div>
+                <button type="submit" class="submit-btn" id="submitButton">
+                  <svg class="submit-icon" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+                  <span class="spinner" aria-hidden="true"></span>
+                  <span class="submit-text">إرسال طلب التسجيل</span>
+                </button>
+              </div>
+            </div>
+          </section>
+        </form>
+
+        <section class="panel success-screen" id="successScreen" aria-live="polite">
+          <div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"></path></svg></div>
+          <h2>تم استلام طلبك</h2>
+          <p id="successMessage"></p>
+          <span class="registration-id" id="registrationId"></span>
+        </section>
+      </main>
+
+      <aside class="sidebar">
+        <div class="summary-card">
+          <div class="summary-main">
+            <h2>ملخص الاختيار</h2>
+            <p class="summary-sub">يتحدث تلقائيًا عند اختيار الدورات.</p>
+            <div class="summary-count">
+              <div><span class="summary-number" id="selectedCount">0</span><div class="summary-label">دورات مختارة</div></div>
+              <span class="summary-label">يمكن اختيار عدة دورات</span>
+            </div>
+            <div class="summary-metrics">
+              <div class="metric"><span class="metric-label">الساعات المعروفة</span><strong class="metric-value" id="totalHours">0</strong></div>
+              <div class="metric"><span class="metric-label">الرسوم المعروفة</span><strong class="metric-value"><span id="totalFees">0</span> د.أ</strong></div>
+            </div>
+          </div>
+          <div>
+            <div class="selected-mini-list" id="selectedMiniList"><div class="selected-placeholder">لم تختر أي دورة بعد.</div></div>
+          </div>
+        </div>
+        <div class="privacy-card">لن نطلب رقم جواز السفر. الرقم الوطني اختياري، وتستخدم البيانات لأغراض التسجيل والتواصل وتنظيم التدريب فقط.</div>
+      </aside>
+    </div>
+
+    <footer>
+      <div>
+        <div class="footer-label">للاسـتـفـســـار :</div>
+        <div class="footer-name">قصي عمر الـــبحري</div>
+        <a class="footer-phone" href="tel:8006930777">800 693 0777</a>
+      </div>
+      <div class="footer-orgs">
+        <div>محطـــة مستقبـــل إربد</div>
+        <div>وزارة الإقتصـــاد الرقمـــي والريـــادة</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const APP_DATA = <?!= appData ?>;
+    const state = {
+      activeCategory: 'الكل',
+      search: '',
+      selected: new Set(),
+      courseMap: new Map(),
+    };
+
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+    document.addEventListener('DOMContentLoaded', init);
+
+    function init() {
+      installThmanyahFont();
+      $('#appTitle').textContent = APP_DATA.title;
+      $('#formDescription').textContent = APP_DATA.description;
+      populateSelect('#governorate', APP_DATA.governorates);
+      populateSelect('#ageGroup', APP_DATA.ageGroups);
+      populateSelect('#education', APP_DATA.educationLevels);
+      populateSelect('#employment', APP_DATA.employmentStatuses);
+      prepareCourses();
+      bindEvents();
+      syncThemeMeta();
+    }
+
+    function installThmanyahFont() {
+      if (!APP_DATA.fontUrl) return;
+      const safeUrl = String(APP_DATA.fontUrl).replace(/["'()\\\n\r]/g, '');
+      const format = safeUrl.toLowerCase().includes('.woff2') ? 'woff2' : safeUrl.toLowerCase().includes('.woff') ? 'woff' : 'truetype';
+      const style = document.createElement('style');
+      style.textContent = `@font-face{font-family:"Thmanyah Sans";src:url("${safeUrl}") format("${format}");font-weight:100 900;font-style:normal;font-display:swap;}`;
+      document.head.appendChild(style);
+    }
+
+    function populateSelect(selector, values) {
+      const select = $(selector);
+      values.forEach(value => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = value;
+        select.appendChild(option);
+      });
+    }
+
+    function prepareCourses() {
+      APP_DATA.categories.forEach(group => group.courses.forEach(course => {
+        state.courseMap.set(course.id, { ...course, category: group.category });
+      }));
+      renderFilters();
+      renderCourses();
+    }
+
+    function renderFilters() {
+      const container = $('#categoryFilters');
+      const categories = ['الكل', ...APP_DATA.categories.map(group => group.category)];
+      container.innerHTML = '';
+      categories.forEach(category => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'filter-btn' + (category === state.activeCategory ? ' active' : '');
+        button.textContent = category;
+        button.dataset.category = category;
+        container.appendChild(button);
+      });
+    }
+
+    function renderCourses() {
+      const groupsContainer = $('#courseGroups');
+      groupsContainer.innerHTML = '';
+      let visibleCount = 0;
+
+      APP_DATA.categories.forEach(group => {
+        const categoryAllowed = state.activeCategory === 'الكل' || state.activeCategory === group.category;
+        const matchingCourses = group.courses.filter(course => matchesSearch(course, group.category));
+        if (!categoryAllowed || matchingCourses.length === 0) return;
+
+        visibleCount += matchingCourses.length;
+        const section = document.createElement('section');
+        section.className = 'course-group';
+        section.dataset.category = group.category;
+
+        const title = document.createElement('h3');
+        title.className = 'group-title';
+        title.innerHTML = `<span>${escapeHtml(group.category)}</span><span class="group-count">${matchingCourses.length} دورة</span>`;
+        section.appendChild(title);
+
+        const grid = document.createElement('div');
+        grid.className = 'courses-grid';
+        matchingCourses.forEach(course => grid.appendChild(createCourseCard(course, group.category)));
+        section.appendChild(grid);
+        groupsContainer.appendChild(section);
+      });
+
+      $('#emptyCourses').style.display = visibleCount ? 'none' : 'block';
+    }
+
+    function createCourseCard(course, category) {
+      const label = document.createElement('label');
+      label.className = 'course-card' + (state.selected.has(course.id) ? ' selected' : '');
+      label.dataset.courseId = course.id;
+
+      const hours = course.hours ? `${course.hours} ساعة` : 'الساعات: —';
+      const price = course.price ? `${course.price} دينار` : 'السعر: —';
+      const plan = course.plan ? `الخطة: ${course.plan}` : 'الخطة: —';
+
+      label.innerHTML = `
+        <input class="course-checkbox" type="checkbox" name="selectedCourses" value="${escapeHtml(course.id)}" ${state.selected.has(course.id) ? 'checked' : ''}>
+        <span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"></path></svg></span>
+        <span class="course-code">رقم ${escapeHtml(course.number)}</span>
+        <h4 class="course-name">${escapeHtml(course.name)}</h4>
+        <div class="course-meta">
+          <span class="meta-chip">${escapeHtml(hours)}</span>
+          <span class="meta-chip">${escapeHtml(course.level)}</span>
+          <span class="meta-chip">${escapeHtml(price)}</span>
+          <span class="meta-chip">${escapeHtml(plan)}</span>
+        </div>`;
+
+      return label;
+    }
+
+    function matchesSearch(course, category) {
+      if (!state.search) return true;
+      const haystack = normalizeArabic([course.number, course.name, course.level, category].join(' '));
+      return haystack.includes(normalizeArabic(state.search));
+    }
+
+    function bindEvents() {
+      $('#themeToggle').addEventListener('click', toggleTheme);
+
+      $('#categoryFilters').addEventListener('click', event => {
+        const button = event.target.closest('.filter-btn');
+        if (!button) return;
+        state.activeCategory = button.dataset.category;
+        renderFilters();
+        renderCourses();
+      });
+
+      $('#courseSearch').addEventListener('input', event => {
+        state.search = event.target.value.trim();
+        renderCourses();
+      });
+
+      $('#courseGroups').addEventListener('change', event => {
+        const checkbox = event.target.closest('.course-checkbox');
+        if (!checkbox) return;
+        checkbox.checked ? state.selected.add(checkbox.value) : state.selected.delete(checkbox.value);
+        checkbox.closest('.course-card').classList.toggle('selected', checkbox.checked);
+        updateSummary();
+      });
+
+      $$('input[name="accessibility"]').forEach(input => input.addEventListener('change', updateAccessibilityField));
+      $('#registrationForm').addEventListener('submit', handleSubmit);
+    }
+
+    function updateAccessibilityField() {
+      const value = $('input[name="accessibility"]:checked')?.value || '';
+      const field = $('#accessibilityDetailsField');
+      const textarea = $('#accessibilityDetails');
+      field.hidden = value !== 'نعم';
+      textarea.required = value === 'نعم';
+      if (value !== 'نعم') textarea.value = '';
+    }
+
+    function updateSummary() {
+      const selectedCourses = [...state.selected].map(id => state.courseMap.get(id)).filter(Boolean);
+      const totalHours = selectedCourses.reduce((sum, course) => sum + (course.hours ? Number(course.hours) : 0), 0);
+      const totalFees = selectedCourses.reduce((sum, course) => sum + (course.price ? Number(course.price) : 0), 0);
+
+      $('#selectedCount').textContent = selectedCourses.length;
+      $('#totalHours').textContent = formatNumber(totalHours);
+      $('#totalFees').textContent = formatNumber(totalFees);
+
+      const list = $('#selectedMiniList');
+      if (!selectedCourses.length) {
+        list.innerHTML = '<div class="selected-placeholder">لم تختر أي دورة بعد.</div>';
+        return;
+      }
+      list.innerHTML = selectedCourses.map(course =>
+        `<div class="selected-mini-item"><strong>${escapeHtml(course.name)}</strong><br><span>${escapeHtml(course.category)} · رقم ${escapeHtml(course.number)}</span></div>`
+      ).join('');
+    }
+
+    async function handleSubmit(event) {
+      event.preventDefault();
+      clearError();
+      const form = event.currentTarget;
+
+      if (!form.reportValidity()) return;
+      if (state.selected.size === 0) {
+        showError('اختر دورة تدريبية واحدة على الأقل.', '#coursesSection');
+        return;
+      }
+
+      const payload = collectPayload(form);
+      setSubmitting(true);
+
+      google.script.run
+        .withSuccessHandler(result => {
+          setSubmitting(false);
+          if (!result || !result.ok) {
+            showError('تعذر إكمال التسجيل. حاول مرة أخرى.');
+            return;
+          }
+          showSuccess(result);
+        })
+        .withFailureHandler(error => {
+          setSubmitting(false);
+          showError(error && error.message ? error.message : 'حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.');
+        })
+        .submitRegistration(payload);
+    }
+
+    function collectPayload(form) {
+      const fd = new FormData(form);
+      return {
+        fullName: fd.get('fullName'),
+        nationalId: fd.get('nationalId'),
+        nationality: fd.get('nationality'),
+        ageGroup: fd.get('ageGroup'),
+        gender: fd.get('gender'),
+        mobile: fd.get('mobile'),
+        alternatePhone: fd.get('alternatePhone'),
+        email: fd.get('email'),
+        governorate: fd.get('governorate'),
+        area: fd.get('area'),
+        education: fd.get('education'),
+        specialization: fd.get('specialization'),
+        employment: fd.get('employment'),
+        organization: fd.get('organization'),
+        preferredTime: fd.get('preferredTime'),
+        contactMethod: fd.get('contactMethod'),
+        accessibility: fd.get('accessibility'),
+        accessibilityDetails: fd.get('accessibilityDetails'),
+        source: fd.get('source'),
+        notes: fd.get('notes'),
+        website: fd.get('website'),
+        consent: fd.get('consent') === 'on',
+        selectedCourseIds: [...state.selected],
+      };
+    }
+
+    function setSubmitting(isSubmitting) {
+      const button = $('#submitButton');
+      button.disabled = isSubmitting;
+      button.classList.toggle('loading', isSubmitting);
+      $('.submit-text', button).textContent = isSubmitting ? 'جارٍ إرسال الطلب...' : 'إرسال طلب التسجيل';
+    }
+
+    function showError(message, focusTarget) {
+      const box = $('#formError');
+      box.textContent = message;
+      box.classList.add('show');
+      const target = focusTarget ? $(focusTarget) : box;
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function clearError() {
+      const box = $('#formError');
+      box.textContent = '';
+      box.classList.remove('show');
+    }
+
+    function showSuccess(result) {
+      $('#registrationForm').style.display = 'none';
+      $('.sidebar').style.display = 'none';
+      $('#successMessage').textContent = result.message;
+      $('#registrationId').textContent = result.registrationId;
+      $('#successScreen').classList.add('show');
+      $('#successScreen').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function toggleTheme() {
+      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      try { localStorage.setItem('irbid-training-theme', next); } catch (error) {}
+      syncThemeMeta();
+    }
+
+    function syncThemeMeta() {
+      $('#themeColorMeta').setAttribute('content', document.documentElement.dataset.theme === 'dark' ? '#0d1211' : '#f3f5f1');
+    }
+
+    function normalizeArabic(value) {
+      return String(value || '')
+        .toLowerCase()
+        .replace(/[أإآ]/g, 'ا')
+        .replace(/ة/g, 'ه')
+        .replace(/ى/g, 'ي')
+        .replace(/[\u064B-\u065F\u0670]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function formatNumber(value) {
+      return Number(value || 0).toLocaleString('ar-JO', { maximumFractionDigits: 2 });
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
+
